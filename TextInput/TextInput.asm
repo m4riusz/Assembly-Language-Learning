@@ -1,3 +1,7 @@
+STD_OUT equ 0x2000004
+STD_IN equ 0x2000003
+SYS_EXIT equ 0x2000001
+
 section .data
 	question db "What is your name?", 10
 	summary db "Hello, "	
@@ -12,12 +16,12 @@ start:
 	call _askForName
 	call _readName
 	call _printSummary
-	mov rax, 0x2000001
+	mov rax, SYS_EXIT
 	mov rdi, 0
 	syscall
 
 _askForName:
-	mov rax, 0x2000004
+	mov rax, STD_OUT
 	mov rdi, 1
 	mov rsi, question
 	mov rdx, 19
@@ -25,7 +29,7 @@ _askForName:
 	ret
 
 _readName:
-	mov rax, 0x2000003
+	mov rax, STD_IN
 	mov rdi, 0
 	mov rsi, name
 	mov rdx, 16
@@ -33,12 +37,12 @@ _readName:
 	ret
 
 _printSummary:
-	mov rax, 0x2000004
+	mov rax, STD_OUT
 	mov rdi, 1
 	mov rsi, summary
 	mov rdx, 7
 	syscall
-	mov rax, 0x2000004
+	mov rax, STD_OUT
 	mov rdi, 1
 	mov rsi, name
 	mov rdx, 16
